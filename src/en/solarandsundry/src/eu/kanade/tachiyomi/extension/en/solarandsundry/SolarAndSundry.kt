@@ -24,7 +24,7 @@ class SolarAndSundry : HttpSource() {
 
     override val name = "Solar and Sundry"
 
-    override val baseUrl = "https://solar-and-sundry-worker.giraugh.workers.dev"
+    override val baseUrl = "https://sas-api.fly.dev"
 
     override val lang = "en"
 
@@ -35,12 +35,12 @@ class SolarAndSundry : HttpSource() {
     private fun createManga(): SManga {
         return SManga.create().apply {
             title = "Solar and Sundry"
-            url = "/chapter"
+            url = "/page"
             author = "Ewan Breakey"
             artist = author
             status = SManga.ONGOING
-            description = "a sci-fi webcomic about creating an ecosystem where there shouldn't be one"
-            thumbnail_url = "https://imagedelivery.net/zthi1l8fKrUGB5ig08mq-Q/4b15df30-85c7-429e-d062-bf1d19f0fd00/public"
+            description = "a sci-fi horror webcomic about life blooming against all odds"
+            thumbnail_url = "https://imagedelivery.net/zthi1l8fKrUGB5ig08mq-Q/de292ba7-f164-4f43-ec17-1876a7a44600/public"
         }
     }
 
@@ -98,14 +98,7 @@ class SolarAndSundry : HttpSource() {
     // Chapters
 
     override fun chapterListParse(response: Response): List<SChapter> {
-        val chapters = JSONArray(response.body.string())
-        val pages = ArrayList<JSONObject>()
-        for (i in 0 until chapters.length()) {
-            val chapterPages = chapters.getJSONObject(i).getJSONArray("pages")
-            for (j in 0 until chapterPages.length()) {
-                pages.add(chapterPages.getJSONObject(j))
-            }
-        }
+        val pages = JSONArray(response.body.string())
         return pages.map { page ->
             SChapter.create().apply {
                 name = page.getString("name")
